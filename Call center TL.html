@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call Center TL Dashboard - 14417 Campaign</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', 'Segoe UI', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        /* Top Navigation Bar */
+        .top-nav {
+            background-color: #2c3e90;
+            color: white;
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .nav-item {
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Stats Cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid #2c3e90;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .stat-title {
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2c3e90;
+            margin-bottom: 15px;
+        }
+
+        .stat-breakdown {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .stat-item-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .stat-item-value.high { color: #f44336; }
+        .stat-item-value.medium { color: #ff9800; }
+        .stat-item-value.low { color: #4caf50; }
+        .stat-item-value.completed { color: #4caf50; }
+        .stat-item-value.in-progress { color: #2196f3; }
+        .stat-item-value.not-started { color: #9e9e9e; }
+
+        /* Table Section */
+        .table-section {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+
+        .table-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .filters-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            min-width: 150px;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table thead {
+            background-color: #f8f9fa;
+        }
+
+        .data-table th {
+            padding: 15px 12px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .data-table td {
+            padding: 15px 12px;
+            font-size: 14px;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Priority Badge */
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .priority-high {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .priority-medium {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+
+        .priority-low {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-in-progress {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+
+        .status-completed {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-not-started {
+            background-color: #f5f5f5;
+            color: #666;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .indicator-yellow { background-color: #ff9800; }
+        .indicator-green { background-color: #4caf50; }
+        .indicator-grey { background-color: #9e9e9e; }
+
+        /* Action Buttons */
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .btn-view {
+            background-color: #e3f2fd;
+            color: #2196f3;
+        }
+
+        .btn-view:hover {
+            background-color: #2196f3;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .btn-download {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .btn-download:hover {
+            background-color: #4caf50;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Control Buttons */
+        .control-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .ctrl-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-start {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .btn-start:hover {
+            background-color: #388e3c;
+        }
+
+        .btn-pause {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        .btn-pause:hover {
+            background-color: #f57c00;
+        }
+
+        .btn-close {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn-close:hover {
+            background-color: #d32f2f;
+        }
+
+        .btn-disabled {
+            background-color: #e0e0e0;
+            color: #9e9e9e;
+            cursor: not-allowed;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            background: none;
+            border: none;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .info-value {
+            color: #333;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: #2c3e90;
+            border-bottom: 2px solid #2c3e90;
+            padding-bottom: 8px;
+        }
+
+        .download-link {
+            color: #2c3e90;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .download-link:hover {
+            text-decoration: underline;
+        }
+
+        .instruction-box {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .instruction-title {
+            font-weight: 600;
+            color: #e65100;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .instruction-steps {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .instruction-steps ol {
+            margin-left: 20px;
+        }
+
+        .instruction-steps li {
+            margin-bottom: 8px;
+        }
+
+        .highlight-box {
+            background-color: #e3f2fd;
+            border: 1px solid #2196f3;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+
+        .highlight-text {
+            color: #1976d2;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .btn-primary {
+            background-color: #2c3e90;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background-color: #1e2a5e;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: #2c3e90;
+            padding: 10px 25px;
+            border: 1px solid #2c3e90;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f5f5f5;
+        }
+
+        .warning-text {
+            color: #f44336;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .success-text {
+            color: #4caf50;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <div class="nav-left">
+            <div class="nav-item">🏠 Home</div>
+            <div class="nav-item">📊 Component</div>
+            <div class="nav-item">✓ Approvals</div>
+            <div class="nav-item">📞 14417</div>
+            <div class="nav-item">📋 Reports</div>
+        </div>
+        <div class="nav-left">
+            <div class="nav-item">👤 Call Center TL - Admin</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Stats Cards -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Total Active Tickets (Approved by DEO)</div>
+                    <div class="stat-icon">✓</div>
+                </div>
+                <div class="stat-number">05</div>
+                <div class="stat-breakdown">
+                    <div class="stat-item">
+                        <div class="stat-item-label">Total High Priority Tickets</div>
+                        <div class="stat-item-value high">01</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-item-label">Total Medium Priority Tickets</div>
+                        <div class="stat-item-value medium">03</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-item-label">Total Low Priority Tickets</div>
+                        <div class="stat-item-value low">01</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Overall Ticket Info (DEO Approved)</div>
+                    <div class="stat-icon">🎧</div>
+                </div>
+                <div class="stat-number">50</div>
+                <div class="stat-breakdown">
+                    <div class="stat-item">
+                        <div class="stat-item-label">Total Campaign Completed</div>
+                        <div class="stat-item-value completed">45</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-item-label">Total Campaign In Progress</div>
+                        <div class="stat-item-value in-progress">05</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-item-label">Total Campaign Not Started</div>
+                        <div class="stat-item-value not-started">00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Request Table -->
+        <div class="table-section">
+            <div class="table-header">Request for Call Center</div>
+
+            <div class="filters-row">
+                <div class="search-box">
+                    <input type="text" placeholder="Search with Req. Id">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="filter-label">Priority</span>
+                    <select class="filter-select">
+                        <option>All</option>
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                    </select>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="filter-label">Status</span>
+                    <select class="filter-select">
+                        <option>In Progress</option>
+                        <option>Not Started</option>
+                        <option>Completed</option>
+                    </select>
+                </div>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Campaign ID</th>
+                        <th>Name of the Request</th>
+                        <th>Priority</th>
+                        <th>Total Contacts</th>
+                        <th>Status</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>View Campaign Info</th>
+                        <th>Controls</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>ST0012</td>
+                        <td>Sample Name of the request</td>
+                        <td><span class="priority-badge priority-high">● High</span></td>
+                        <td>50</td>
+                        <td>
+                            <span class="status-badge status-in-progress">
+                                <span class="status-indicator indicator-yellow"></span>
+                                In Progress
+                            </span>
+                        </td>
+                        <td>15-01-2026</td>
+                        <td>20-01-2026</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="icon-btn btn-view" onclick="viewCampaignDetails('ST0012')" title="View Details">👁️</button>
+                                <button class="icon-btn btn-download" onclick="downloadExcel('ST0012')" title="Download Excel">📥</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="control-btns">
+                                <button class="ctrl-btn btn-pause" onclick="pauseCampaign('ST0012')">⏸ Pause</button>
+                                <button class="ctrl-btn btn-close" onclick="closeCampaign('ST0012')">✕ Close</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>ST0013</td>
+                        <td>Sample Name of the request</td>
+                        <td><span class="priority-badge priority-low">● Low</span></td>
+                        <td>500</td>
+                        <td>
+                            <span class="status-badge status-in-progress">
+                                <span class="status-indicator indicator-yellow"></span>
+                                In Progress
+                            </span>
+                        </td>
+                        <td>16-01-2026</td>
+                        <td>22-01-2026</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="icon-btn btn-view" onclick="viewCampaignDetails('ST0013')">👁️</button>
+                                <button class="icon-btn btn-download" onclick="downloadExcel('ST0013')">📥</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="control-btns">
+                                <button class="ctrl-btn btn-pause" onclick="pauseCampaign('ST0013')">⏸ Pause</button>
+                                <button class="ctrl-btn btn-close" onclick="closeCampaign('ST0013')">✕ Close</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>ST0014</td>
+                        <td>Sample Name of the request</td>
+                        <td><span class="priority-badge priority-medium">● Medium</span></td>
+                        <td>200</td>
+                        <td>
+                            <span class="status-badge status-not-started">
+                                <span class="status-indicator indicator-grey"></span>
+                                Not Started
+                            </span>
+                        </td>
+                        <td>17-01-2026</td>
+                        <td>25-01-2026</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="icon-btn btn-view" onclick="viewCampaignDetails('ST0014')">👁️</button>
+                                <button class="icon-btn btn-download" onclick="downloadExcel('ST0014')">📥</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="control-btns">
+                                <button class="ctrl-btn btn-start" onclick="startCampaign('ST0014')">▶ Start</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>ST0015</td>
+                        <td>Sample Name-14417</td>
+                        <td><span class="priority-badge priority-medium">● Medium</span></td>
+                        <td>100</td>
+                        <td>
+                            <span class="status-badge status-in-progress">
+                                <span class="status-indicator indicator-yellow"></span>
+                                In Progress
+                            </span>
+                        </td>
+                        <td>18-01-2026</td>
+                        <td>28-01-2026</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="icon-btn btn-view" onclick="viewCampaignDetails('ST0015')">👁️</button>
+                                <button class="icon-btn btn-download" onclick="downloadExcel('ST0015')">📥</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="control-btns">
+                                <button class="ctrl-btn btn-pause" onclick="pauseCampaign('ST0015')">⏸ Pause</button>
+                                <button class="ctrl-btn btn-close" onclick="closeCampaign('ST0015')">✕ Close</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>ST0016</td>
+                        <td>Sample Name of the request .....</td>
+                        <td><span class="priority-badge priority-medium">● Medium</span></td>
+                        <td>250</td>
+                        <td>
+                            <span class="status-badge status-not-started">
+                                <span class="status-indicator indicator-grey"></span>
+                                Not Started
+                            </span>
+                        </td>
+                        <td>19-01-2026</td>
+                        <td>30-01-2026</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="icon-btn btn-view" onclick="viewCampaignDetails('ST0016')">👁️</button>
+                                <button class="icon-btn btn-download" onclick="downloadExcel('ST0016')">📥</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="control-btns">
+                                <button class="ctrl-btn btn-start" onclick="startCampaign('ST0016')">▶ Start</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Information Box -->
+        <div class="table-section">
+            <div class="table-header">ℹ️ Important Information for Call Center Team Lead</div>
+            
+            <div class="instruction-box">
+                <div class="instruction-title">📋 Campaign Execution Workflow</div>
+                <div class="instruction-steps">
+                    <ol>
+                        <li><strong>Download Excel File:</strong> Click the 📥 download button to get the contact list for each campaign from TNEMIS portal.</li>
+                        <li><strong>Split Excel File:</strong> Manually split the downloaded Excel file based on your team allocation (Team A, Team B, Team C, Team D).</li>
+                        <li><strong>Upload to Mentor Infocomm:</strong> Login to Mentor Infocomm software and upload the split Excel files for each team.</li>
+                        <li><strong>Configure Agent Assignment:</strong> In Mentor Infocomm, assign contacts to specific agents within each team.</li>
+                        <li><strong>Start Campaign:</strong> Return to TNEMIS and click "▶ Start" button to begin the campaign.</li>
+                        <li><strong>Monitor Progress:</strong> Track campaign progress in real-time through Mentor Infocomm dashboard.</li>
+                        <li><strong>Control Campaign:</strong> Use "⏸ Pause" to temporarily stop or "✕ Close" to complete the campaign.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-text">
+                    <strong>⚠️ Maximum 4 Campaigns Simultaneously:</strong> You can run a maximum of 4 campaigns at the same time. Please complete or pause existing campaigns before starting new ones.
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-text">
+                    <strong>🔄 Pause/Start Integration:</strong> When you click "Pause" or "Start" in TNEMIS, the campaign will automatically pause/resume in Mentor Infocomm software as well.
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-text">
+                    <strong>📊 Reports:</strong> After campaign completion, Mentor Infocomm will automatically push agent-wise and campaign-wise reports to TNEMIS. You can view and download these reports from the Reports menu.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Campaign Details Modal -->
+    <div id="viewCampaignModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('viewCampaignModal')">×</button>
+            <div class="modal-header">Campaign Details</div>
+            
+            <div class="section-title">Campaign Information</div>
+            <div class="info-row">
+                <div class="info-label">Status</div>
+                <div class="info-value" id="viewStatus">
+                    <span class="status-badge status-in-progress">
+                        <span class="status-indicator indicator-yellow"></span>
+                        In Progress
+                    </span>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Description</div>
+                <div class="info-value" id="viewDescription">This campaign is for collecting feedback on school fees payment status from parents.</div>
+            </div>
+
+            <div class="section-title">Contact List</div>
+            <div style="padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                <a href="#" class="download-link" onclick="downloadExcel('ST0012'); return false;">
+                    📥 Download contact_list.xlsx (1,250 contacts)
+                </a>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn-secondary" onclick="closeModal('viewCampaignModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mentor Infocomm Upload & Team Assignment Modal -->
+    <div id="mentorUploadModal" class="modal">
+        <div class="modal-content" style="max-width: 1000px;">
+            <button class="close-modal" onclick="closeModal('mentorUploadModal')">×</button>
+            <div class="modal-header">🚀 Start Campaign - Mentor Infocomm Configuration</div>
+            
+            <div class="instruction-box">
+                <div class="instruction-title">📋 Steps to Configure Campaign in Mentor Infocomm</div>
+                <div class="instruction-steps">
+                    <ol>
+                        <li>Download the original contact list from previous screen</li>
+                        <li>Split the Excel file based on your team allocation</li>
+                        <li>Upload split Excel files below and assign to teams</li>
+                        <li>Click "Upload to Mentor Infocomm" to push data</li>
+                        <li>Campaign will automatically start in Mentor Infocomm software</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="section-title">Campaign Information</div>
+            <div class="info-row">
+                <div class="info-label">Campaign ID</div>
+                <div class="info-value" id="mentorCampaignId">ST0014</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Campaign Name</div>
+                <div class="info-value" id="mentorCampaignName">School Fees Collection Campaign</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Total Contacts</div>
+                <div class="info-value" id="mentorTotalContacts">1,250</div>
+            </div>
+
+            <div class="section-title">Upload Split Excel Files & Assign Teams</div>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <div style="display: grid; gap: 20px;" id="teamUploadContainer">
+                    <!-- Team A Upload -->
+                    <div style="background: white; padding: 20px; border-radius: 6px; border: 1px solid #ddd;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <div style="font-weight: 600; font-size: 15px; color: #2c3e90;">
+                                📁 Team A Assignment
+                            </div>
+                            <button class="btn-secondary" style="padding: 6px 12px; font-size: 12px;" onclick="removeTeamUpload('teamA')">Remove</button>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label style="display: block; font-size: 13px; margin-bottom: 8px;">Team Name</label>
+                                <input type="text" value="Team A" readonly style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; background: #f5f5f5;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 13px; margin-bottom: 8px;">Number of Contacts</label>
+                                <input type="number" id="teamAContacts" placeholder="Enter contact count" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 15px;">
+                            <label style="display: block; font-size: 13px; margin-bottom: 8px;">Upload Split Excel File <span style="color: #f44336;">*</span></label>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <label style="flex: 1; padding: 10px; border: 2px dashed #ddd; border-radius: 6px; text-align: center; cursor: pointer; background: #fafafa;">
+                                    <span id="teamAFileName" style="font-size: 13px; color: #666;">Choose Excel File (.xlsx, .xls)</span>
+                                    <input type="file" id="teamAFile" accept=".xlsx,.xls" onchange="handleTeamFileUpload('teamA', this)" style="display: none;">
+                                </label>
+                                <span id="teamAStatus" style="font-size: 20px; display: none;">✓</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team B Upload -->
+                    <div style="background: white; padding: 20px; border-radius: 6px; border: 1px solid #ddd;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <div style="font-weight: 600; font-size: 15px; color: #2c3e90;">
+                                📁 Team B Assignment
+                            </div>
+                            <button class="btn-secondary" style="padding: 6px 12px; font-size: 12px;" onclick="removeTeamUpload('teamB')">Remove</button>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label style="display: block; font-size: 13px; margin-bottom: 8px;">Team Name</label>
+                                <input type="text" value="Team B" readonly style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; background: #f5f5f5;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 13px; margin-bottom: 8px;">Number of Contacts</label>
+                                <input type="number" id="teamBContacts" placeholder="Enter contact count" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 15px;">
+                            <label style="display: block; font-size: 13px; margin-bottom: 8px;">Upload Split Excel File <span style="color: #f44336;">*</span></label>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <label style="flex: 1; padding: 10px; border: 2px dashed #ddd; border-radius: 6px; text-align: center; cursor: pointer; background: #fafafa;">
+                                    <span id="teamBFileName" style="font-size: 13px; color: #666;">Choose Excel File (.xlsx, .xls)</span>
+                                    <input type="file" id="teamBFile" accept=".xlsx,.xls" onchange="handleTeamFileUpload('teamB', this)" style="display: none;">
+                                </label>
+                                <span id="teamBStatus" style="font-size: 20px; display: none;">✓</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team C Upload -->
+                    <div style="background: white; padding: 20px; border-radius: 6px; border: 1px solid #ddd;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <div style="font-weight: 600; font-size: 15px; color: #2c3e90;">
+                                📁 Team C Assignment
+                            </div>
+                            <button class="btn-secondary" style="padding: 6px 12px; font-size: 12px;" onclick="removeTeamUpload('teamC')">Remove</button>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label style="display: block; font-size: 13px; margin-bottom: 8px;">Team Name</label>
+                                <input type="text" value="Team C" readonly style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; background: #f5f5f5;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 13px; margin-bottom: 8px;">Number of Contacts</label>
+                                <input type="number" id="teamCContacts" placeholder="Enter contact count" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 15px;">
+                            <label style="display: block; font-size: 13px; margin-bottom: 8px;">Upload Split Excel File <span style="color: #f44336;">*</span></label>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <label style="flex: 1; padding: 10px; border: 2px dashed #ddd; border-radius: 6px; text-align: center; cursor: pointer; background: #fafafa;">
+                                    <span id="teamCFileName" style="font-size: 13px; color: #666;">Choose Excel File (.xlsx, .xls)</span>
+                                    <input type="file" id="teamCFile" accept=".xlsx,.xls" onchange="handleTeamFileUpload('teamC', this)" style="display: none;">
+                                </label>
+                                <span id="teamCStatus" style="font-size: 20px; display: none;">✓</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team D Upload -->
+                    <div style="background: white; padding: 20px; border-radius: 6px; border: 1px solid #ddd;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <div style="font-weight: 600; font-size: 15px; color: #2c3e90;">
+                                📁 Team D Assignment
+                            </div>
+                            <button class="btn-secondary" style="padding: 6px 12px; font-size: 12px;" onclick="removeTeamUpload('teamD')">Remove</button>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label style="display: block; font-size: 13px; margin-bottom: 8px;">Team Name</label>
+                                <input type="text" value="Team D" readonly style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; background: #f5f5f5;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 13px; margin-bottom: 8px;">Number of Contacts</label>
+                                <input type="number" id="teamDContacts" placeholder="Enter contact count" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 15px;">
+                            <label style="display: block; font-size: 13px; margin-bottom: 8px;">Upload Split Excel File <span style="color: #f44336;">*</span></label>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <label style="flex: 1; padding: 10px; border: 2px dashed #ddd; border-radius: 6px; text-align: center; cursor: pointer; background: #fafafa;">
+                                    <span id="teamDFileName" style="font-size: 13px; color: #666;">Choose Excel File (.xlsx, .xls)</span>
+                                    <input type="file" id="teamDFile" accept=".xlsx,.xls" onchange="handleTeamFileUpload('teamD', this)" style="display: none;">
+                                </label>
+                                <span id="teamDStatus" style="font-size: 20px; display: none;">✓</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="btn-secondary" onclick="addMoreTeam()" style="padding: 8px 20px;">
+                        + Add More Team
+                    </button>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-text">
+                    <strong>ℹ️ Note:</strong> After uploading files here, the system will automatically push this data to Mentor Infocomm software. Agents will then be able to see their assigned contacts in the Mentor Infocomm calling portal.
+                </div>
+            </div>
+
+            <div id="uploadSummary" style="display: none; background: #e8f5e9; padding: 15px; border-radius: 6px; margin-top: 20px; border: 1px solid #4caf50;">
+                <div style="font-weight: 600; color: #2e7d32; margin-bottom: 10px;">✓ Upload Summary</div>
+                <div id="summaryContent" style="font-size: 13px; color: #1b5e20;"></div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn-secondary" onclick="closeModal('mentorUploadModal')">Cancel</button>
+                <button class="btn-primary" onclick="uploadToMentorInfocomm()" style="background-color: #4caf50;">
+                    🚀 Upload to Mentor Infocomm & Start Campaign
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentCampaignId = '';
+        let teamFileUploads = {
+            teamA: null,
+            teamB: null,
+            teamC: null,
+            teamD: null
+        };
+        let teamCount = 4;
+        let activeCampaigns = 2; // Current number of running campaigns
+
+        // View Campaign Details
+        function viewCampaignDetails(campaignId) {
+            currentCampaignId = campaignId;
+            document.getElementById('viewCampaignId').textContent = campaignId;
+            document.getElementById('viewCampaignModal').classList.add('show');
+        }
+
+        // Download Excel
+        function downloadExcel(campaignId) {
+            alert(`📥 Downloading contact list for campaign ${campaignId}...\n\nFile: campaign_${campaignId}_contacts.xlsx`);
+        }
+
+        // Start Campaign - Opens Mentor Infocomm Upload Modal
+        function startCampaign(campaignId) {
+            if (activeCampaigns >= 4) {
+                alert('⚠️ Maximum 4 campaigns can run simultaneously!\n\nPlease pause or close an existing campaign before starting a new one.');
+                return;
+            }
+
+            currentCampaignId = campaignId;
+            document.getElementById('mentorCampaignId').textContent = campaignId;
+            document.getElementById('mentorCampaignName').textContent = 'Campaign for ' + campaignId;
+            document.getElementById('mentorUploadModal').classList.add('show');
+        }
+
+        // Pause Campaign
+        function pauseCampaign(campaignId) {
+            if (confirm(`⏸ Pause campaign ${campaignId}?\n\nThis will also pause the campaign in Mentor Infocomm software.`)) {
+                alert(`Campaign ${campaignId} paused successfully!\n\n✓ Paused in TNEMIS\n✓ Paused in Mentor Infocomm`);
+                location.reload();
+            }
+        }
+
+        // Close Campaign
+        function closeCampaign(campaignId) {
+            if (confirm(`✕ Close campaign ${campaignId}?\n\nThis will mark the campaign as completed. Make sure all pending calls are handled.`)) {
+                alert(`Campaign ${campaignId} closed successfully!\n\n✓ Campaign marked as completed\n✓ Reports will be generated and pushed to TNEMIS`);
+                location.reload();
+            }
+        }
+
+        // Handle Team File Upload
+        function handleTeamFileUpload(teamId, input) {
+            if (input.files.length > 0) {
+                const file = input.files[0];
+                const fileName = file.name;
+                const fileSize = (file.size / 1024).toFixed(2);
+                
+                // Update UI
+                document.getElementById(teamId + 'FileName').textContent = `${fileName} (${fileSize} KB)`;
+                document.getElementById(teamId + 'Status').style.display = 'inline';
+                document.getElementById(teamId + 'Status').style.color = '#4caf50';
+                
+                // Store file
+                teamFileUploads[teamId] = file;
+                
+                // Auto-detect contact count from file (simulated)
+                const randomCount = Math.floor(Math.random() * 300) + 100;
+                document.getElementById(teamId + 'Contacts').value = randomCount;
+            }
+        }
+
+        // Remove Team Upload
+        function removeTeamUpload(teamId) {
+            if (confirm('Remove this team assignment?')) {
+                const teamDiv = event.target.closest('[style*="background: white"]');
+                teamDiv.remove();
+                teamFileUploads[teamId] = null;
+            }
+        }
+
+        // Add More Team
+        function addMoreTeam() {
+            teamCount++;
+            const teamLetter = String.fromCharCode(64 + teamCount); // E, F, G, etc.
+            const teamId = 'team' + teamLetter;
+            
+            const newTeamHTML = `
+                <div style="background: white; padding: 20px; border-radius: 6px; border: 1px solid #ddd;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <div style="font-weight: 600; font-size: 15px; color: #2c3e90;">
+                            📁 Team ${teamLetter} Assignment
+                        </div>
+                        <button class="btn-secondary" style="padding: 6px 12px; font-size: 12px;" onclick="removeTeamUpload('${teamId}')">Remove</button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="display: block; font-size: 13px; margin-bottom: 8px;">Team Name</label>
+                            <input type="text" value="Team ${teamLetter}" readonly style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; background: #f5f5f5;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 13px; margin-bottom: 8px;">Number of Contacts</label>
+                            <input type="number" id="${teamId}Contacts" placeholder="Enter contact count" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 15px;">
+                        <label style="display: block; font-size: 13px; margin-bottom: 8px;">Upload Split Excel File <span style="color: #f44336;">*</span></label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <label style="flex: 1; padding: 10px; border: 2px dashed #ddd; border-radius: 6px; text-align: center; cursor: pointer; background: #fafafa;">
+                                <span id="${teamId}FileName" style="font-size: 13px; color: #666;">Choose Excel File (.xlsx, .xls)</span>
+                                <input type="file" id="${teamId}File" accept=".xlsx,.xls" onchange="handleTeamFileUpload('${teamId}', this)" style="display: none;">
+                            </label>
+                            <span id="${teamId}Status" style="font-size: 20px; display: none;">✓</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('teamUploadContainer').insertAdjacentHTML('beforeend', newTeamHTML);
+        }
+
+        // Upload to Mentor Infocomm
+        function uploadToMentorInfocomm() {
+            // Validate - at least one team must have file uploaded
+            let hasUpload = false;
+            let totalContacts = 0;
+            let uploadedTeams = [];
+            
+            for (let teamId in teamFileUploads) {
+                if (teamFileUploads[teamId] !== null) {
+                    hasUpload = true;
+                    const contacts = document.getElementById(teamId + 'Contacts')?.value || 0;
+                    totalContacts += parseInt(contacts);
+                    uploadedTeams.push({
+                        team: teamId.replace('team', 'Team '),
+                        contacts: contacts
+                    });
+                }
+            }
+            
+            if (!hasUpload) {
+                alert('⚠️ Please upload at least one team Excel file before proceeding.');
+                return;
+            }
+            
+            // Show summary
+            let summaryHTML = `<strong>Total Teams:</strong> ${uploadedTeams.length}<br>`;
+            summaryHTML += `<strong>Total Contacts:</strong> ${totalContacts}<br><br>`;
+            uploadedTeams.forEach(team => {
+                summaryHTML += `${team.team}: ${team.contacts} contacts<br>`;
+            });
+            
+            document.getElementById('summaryContent').innerHTML = summaryHTML;
+            document.getElementById('uploadSummary').style.display = 'block';
+            
+            // Confirm upload
+            setTimeout(() => {
+                if (confirm(`🚀 Upload data to Mentor Infocomm and start campaign ${currentCampaignId}?\n\nTeams: ${uploadedTeams.length}\nTotal Contacts: ${totalContacts}`)) {
+                    // Simulate upload process
+                    alert(`✓ Upload Successful!\n\n` +
+                          `Campaign ${currentCampaignId} started in Mentor Infocomm\n\n` +
+                          `Teams configured: ${uploadedTeams.length}\n` +
+                          `Total contacts assigned: ${totalContacts}\n\n` +
+                          `Agents can now start calling from Mentor Infocomm software.`);
+                    
+                    closeModal('mentorUploadModal');
+                    location.reload();
+                }
+            }, 500);
+        }
+
+        // Close Modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+            
+            // Reset upload modal if closing
+            if (modalId === 'mentorUploadModal') {
+                teamFileUploads = {
+                    teamA: null,
+                    teamB: null,
+                    teamC: null,
+                    teamD: null
+                };
+                document.getElementById('uploadSummary').style.display = 'none';
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    modal.classList.remove('show');
+                });
+            }
+        }
+    </script>
+</body>
+</html><div class="info-label">Campaign ID</div>
+                <div class="info-value" id="viewCampaignId">ST0012</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Campaign Name</div>
+                <div class="info-value" id="viewCampaignName">School Fees Collection Campaign</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Priority</div>
+                <div class="info-value" id="viewPriority"><span class="priority-badge priority-high">● High</span></div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Total Contacts</div>
+                <div class="info-value" id="viewTotalContacts">1,250</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Start Date</div>
+                <div class="info-value" id="viewStartDate">16-01-2026</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Expected End Date</div>
+                <div class="info-value" id="viewEndDate">20-01-2026</div>
+            </div>
+            <div class="info-row">

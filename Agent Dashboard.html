@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Call Center Dashboard</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: 
+        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+        url("https://images.unsplash.com/photo-1581090700227-1e37b190418e");
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      padding: 40px 50px;
+      border-radius: 16px;
+      text-align: center;
+      width: 480px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .container h1 {
+      color: #ffffff;
+      font-size: 26px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .container p {
+      color: #dcdcdc;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      margin: 12px 0;
+      font-size: 17px;
+      font-weight: 500;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #fff;
+      transition: transform 0.2s;
+      animation: blink 1.6s infinite;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-stakeholder {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      box-shadow: 0 0 15px rgba(0, 198, 255, 0.7);
+    }
+
+    .btn-deo {
+      background: linear-gradient(135deg, #f7971e, #ffd200);
+      box-shadow: 0 0 15px rgba(255, 210, 0, 0.7);
+      animation-delay: 0.4s;
+    }
+
+    .btn-tl {
+      background: linear-gradient(135deg, #8e2de2, #4a00e0);
+      box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+      animation-delay: 0.8s;
+    }
+
+    .btn-mentor {
+      background: linear-gradient(135deg, #11998e, #38ef7d);
+      box-shadow: 0 0 15px rgba(56, 239, 125, 0.7);
+      animation-delay: 1.2s;
+    }
+
+    .btn-dashboard {
+      background: linear-gradient(135deg, #ff512f, #dd2476);
+      box-shadow: 0 0 15px rgba(221, 36, 118, 0.7);
+      animation-delay: 1.6s;
+    }
+
+    /* 🔥 SCREEN 6 – AGENT DASHBOARD */
+    .btn-agent {
+      background: linear-gradient(135deg, #1d976c, #93f9b9);
+      box-shadow: 0 0 15px rgba(147, 249, 185, 0.8);
+      animation-delay: 2.0s;
+    }
+
+    @keyframes blink {
+      0% { box-shadow: 0 0 5px rgba(255,255,255,0.4); }
+      50% { box-shadow: 0 0 20px rgba(255,255,255,0.9); }
+      100% { box-shadow: 0 0 5px rgba(255,255255,0.4); }
+    }
+
+    footer {
+      margin-top: 25px;
+      color: #cfcfcf;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Call Center Dashboard</h1>
+    <p>Please select the required screen to continue</p>
+
+    <button class="btn btn-stakeholder"
+      onclick="goToScreen('14417 stakholder final Page.html')">
+      📞 Stakeholder Request
+    </button>
+
+    <button class="btn btn-deo"
+      onclick="goToScreen('DEO Page.new.html')">
+      🏢 DEO Page
+    </button>
+
+    <button class="btn btn-tl"
+      onclick="goToScreen('TL Page.html')">
+      👨‍💼 Call Center TL Page
+    </button>
+
+    <button class="btn btn-mentor"
+      onclick="goToScreen('Mentor Infocomm Panel.html')">
+      🧑‍🏫 Mentor Infocomm Panel
+    </button>
+
+    <button class="btn btn-dashboard"
+      onclick="goToScreen('Dashboard.html')">
+      📊 Dashboard
+    </button>
+
+    <!-- ✅ SCREEN 6 -->
+    <button class="btn btn-agent"
+      onclick="goToScreen('Agent Dashboard.html')">
+      🎧 Agent Dashboard
+    </button>
+
+    <footer>
+      © 2026 | Support System
+    </footer>
+  </div>
+
+  <script>
+    function goToScreen(page) {
+      window.location.href = page;
+    }
+  </script>
+
+</body>
+</html>

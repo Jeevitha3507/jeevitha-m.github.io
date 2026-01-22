@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Infocomm - Agent Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', 'Segoe UI', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .agent-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .agent-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .agent-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #4caf50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Main Container */
+        .main-container {
+            display: grid;
+            grid-template-columns: 350px 1fr 400px;
+            height: calc(100vh - 60px);
+            gap: 0;
+        }
+
+        /* Left Panel - Dialer & Stats */
+        .left-panel {
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            overflow-y: auto;
+        }
+
+        .dialer-section {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .dialer-display {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .dialer-time {
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .dialer-logo {
+            font-size: 48px;
+            font-weight: 700;
+            color: #4a90e2;
+            margin-bottom: 15px;
+        }
+
+        .dialer-status {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .current-number {
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .call-timer {
+            color: #4caf50;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .dialer-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .dial-btn {
+            background: #2a2a40;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dial-btn:hover {
+            background: #3a3a50;
+            transform: scale(1.05);
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .ctrl-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-answer {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-answer:hover {
+            background: #388e3c;
+        }
+
+        .btn-hold {
+            background: #ff9800;
+            color: white;
+        }
+
+        .btn-hold:hover {
+            background: #f57c00;
+        }
+
+        .btn-hangup {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-hangup:hover {
+            background: #d32f2f;
+        }
+
+        /* Agent Stats */
+        .stats-section {
+            padding: 20px;
+        }
+
+        .stats-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e90;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .stat-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e90;
+        }
+
+        /* Break Buttons */
+        .break-section {
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .break-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-break {
+            background: #ff9800;
+            color: white;
+        }
+
+        .btn-break:hover {
+            background: #f57c00;
+        }
+
+        .btn-lunch {
+            background: #9c27b0;
+            color: white;
+        }
+
+        .btn-lunch:hover {
+            background: #7b1fa2;
+        }
+
+        /* Center Panel - Basic Details Form */
+        .center-panel {
+            background: white;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #2c3e90;
+        }
+
+        .form-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e90;
+        }
+
+        .campaign-badge {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .required {
+            color: #f44336;
+        }
+
+        .form-input, .form-select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #2c3e90;
+            box-shadow: 0 0 0 3px rgba(44, 62, 144, 0.1);
+        }
+
+        .form-input:disabled {
+            background-color: #f5f5f5;
+            color: #999;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-submit {
+            flex: 1;
+            padding: 12px;
+            background: #2c3e90;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: #1e2a5e;
+        }
+
+        .btn-refresh {
+            padding: 12px 20px;
+            background: #f5f5f5;
+            color: #666;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-refresh:hover {
+            background: #e0e0e0;
+        }
+
+        /* Right Panel - Contact Queue & Dynamic Form */
+        .right-panel {
+            background: white;
+            border-left: 1px solid #e0e0e0;
+            overflow-y: auto;
+        }
+
+        .queue-section {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .queue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .queue-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e90;
+        }
+
+        .queue-count {
+            background: #2c3e90;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .contact-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid #2c3e90;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .contact-card:hover {
+            background: #e3f2fd;
+            transform: translateX(5px);
+        }
+
+        .contact-card.active {
+            background: #e3f2fd;
+            border-left-color: #4caf50;
+        }
+
+        .contact-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .contact-phone {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Dynamic Form Section */
+        .dynamic-form-section {
+            padding: 20px;
+        }
+
+        .dynamic-form-header {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e90;
+            margin-bottom: 15px;
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .form-disabled-overlay {
+            background: rgba(255,255,255,0.9);
+            padding: 40px;
+            text-align: center;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            color: #999;
+        }
+
+        /* Call Status Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .status-options {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .status-option {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-option:hover {
+            border-color: #2c3e90;
+            background: #f8f9fa;
+        }
+
+        .status-option.selected {
+            border-color: #2c3e90;
+            background: #e3f2fd;
+        }
+
+        .status-icon {
+            font-size: 20px;
+        }
+
+        .status-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .callback-section {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff3e0;
+            border-radius: 8px;
+        }
+
+        .callback-section.show {
+            display: block;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-modal {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-confirm {
+            background: #2c3e90;
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background: #1e2a5e;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="logo-section">
+            <div class="logo">3CX</div>
+            <div style="font-size: 13px; opacity: 0.9;">Mentor Infocomm Agent Portal</div>
+        </div>
+        <div class="agent-info">
+            <div class="agent-name">👤 Agent: Rajesh Kumar (ID: AG001)</div>
+            <div class="agent-status">
+                <span class="status-dot"></span>
+                <span>Available</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Panel - Dialer & Stats -->
+        <div class="left-panel">
+            <!-- Dialer Section -->
+            <div class="dialer-section">
+                <div class="dialer-display">
+                    <div class="dialer-time" id="currentTime">17:49:33</div>
+                    <div class="dialer-logo">3CX</div>
+                    <div class="dialer-status" id="dialerStatus">On Hook</div>
+                    <div class="current-number" id="currentNumber">9751446733</div>
+                    <div class="call-timer" id="callTimer">00:00:00</div>
+                </div>
+
+                <div class="dialer-actions">
+                    <button class="dial-btn">1</button>
+                    <button class="dial-btn">2<br><small>ABC</small></button>
+                    <button class="dial-btn">3<br><small>DEF</small></button>
+                    <button class="dial-btn">4<br><small>GHI</small></button>
+                    <button class="dial-btn">5<br><small>JKL</small></button>
+                    <button class="dial-btn">6<br><small>MNO</small></button>
+                    <button class="dial-btn">7<br><small>PQRS</small></button>
+                    <button class="dial-btn">8<br><small>TUV</small></button>
+                    <button class="dial-btn">9<br><small>WXYZ</small></button>
+                    <button class="dial-btn">*</button>
+                    <button class="dial-btn">0</button>
+                    <button class="dial-btn">#</button>
+                </div>
+
+                <div class="control-buttons">
+                    <button class="ctrl-btn btn-hold" onclick="holdCall()">Hold</button>
+                    <button class="ctrl-btn btn-answer" onclick="answerCall()">📞 Answer</button>
+                    <button class="ctrl-btn btn-hangup" onclick="hangupCall()">Hangup</button>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="stats-section">
+                <div class="stats-title">📊 Today's Performance</div>
+                <div class="stat-item">
+                    <span class="stat-label">Campaign</span>
+                    <span class="stat-value">ST0012</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Contacts Assigned</span>
+                    <span class="stat-value">125</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Calls Attempted</span>
+                    <span class="stat-value">48</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Connected Calls</span>
+                    <span class="stat-value">35</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Forms Submitted</span>
+                    <span class="stat-value">32</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Not Connected</span>
+                    <span class="stat-value">13</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Call Back Scheduled</span>
+                    <span class="stat-value">8</span>
+                </div>
+            </div>
+
+            <!-- Break Section -->
+            <div class="break-section">
+                <button class="break-btn btn-break" onclick="takeBreak()">☕ Take Break</button>
+                <button class="break-btn btn-lunch" onclick="takeLunch()">🍽️ Lunch Break</button>
+            </div>
+        </div>
+
+        <!-- Center Panel - Basic Details Form -->
+        <div class="center-panel">
+            <div class="form-header">
+                <div class="form-title">📋 Contact Basic Details</div>
+                <div class="campaign-badge">Campaign: ST0012</div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label class="form-label">Name <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="contactName" value="Shanmugam">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Phone <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="contactPhone" value="9751446733" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Alternate</label>
+                    <input type="text" class="form-input" id="alternatePhone" value="Alternate">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Age</label>
+                    <select class="form-select" id="age">
+                        <option>35 - 44</option>
+                        <option>18 - 24</option>
+                        <option>25 - 34</option>
+                        <option>45 - 54</option>
+                        <option>55+</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <select class="form-select" id="gender">
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">District <span class="required">*</span></label>
+                    <select class="form-select" id="district">
+                        <option>ARIYALUR</option>
+                        <option>CHENNAI</option>
+                        <option>COIMBATORE</option>
+                        <option>MADURAI</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Block</label>
+                    <select class="form-select" id="block">
+                        <option>Select block</option>
+                        <option>Block 1</option>
+                        <option>Block 2</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Location Type</label>
+                    <select class="form-select" id="locationType">
+                        <option>Select Location Type</option>
+                        <option>Urban</option>
+                        <option>Rural</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Location Name</label>
+                    <input type="text" class="form-input" id="locationName" placeholder="Location Name">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">School</label>
+                    <select class="form-select" id="school">
+                        <option>Select School</option>
+                        <option>Government High School</option>
+                        <option>Primary School</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Standard</label>
+                    <select class="form-select" id="standard">
+                        <option>Select Standard</option>
+                        <option>1st</option>
+                        <option>2nd</option>
+                        <option>3rd</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Management</label>
+                    <select class="form-select" id="management">
+                        <option>Select Management</option>
+                        <option>Government</option>
+                        <option>Private</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">UDISE Code</label>
+                    <input type="text" class="form-input" id="udiseCode" placeholder="UDISE Code">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Caller Type <span class="required">*</span></label>
+                    <select class="form-select" id="callerType">
+                        <option>Teacher/ official</option>
+                        <option>Parent</option>
+                        <option>Student</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Call Type <span class="required">*</span></label>
+                    <select class="form-select" id="callType">
+                        <option>Information call</option>
+                        <option>Complaint</option>
+                        <option>Query</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Call Priority <span class="required">*</span></label>
+                    <select class="form-select" id="callPriority">
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">EMIS ID</label>
+                    <input type="text" class="form-input" id="emisId" placeholder="EMIS ID">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Category <span class="required">*</span></label>
+                    <select class="form-select" id="category">
+                        <option>2_School Ops Complaint/ Query</option>
+                        <option>1_Admission Related</option>
+                        <option>3_Infrastructure</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Sub Category <span class="required">*</span></label>
+                    <select class="form-select" id="subCategory">
+                        <option>13_Fees Related</option>
+                        <option>14_Transport Related</option>
+                        <option>15_Teacher Related</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Call Status <span class="required">*</span></label>
+                    <select class="form-select" id="callStatus">
+                        <option>Closed</option>
+                        <option>Open</option>
+                        <option>In Progress</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Call Remarks <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="callRemarks" value="Details Collected">
+                </div>
+
+                <div class="form-group full-width" style="display: flex; gap: 10px; align-items: center;">
+                    <input type="checkbox" id="blacklist" style="width: 18px; height: 18px;">
+                    <label for="blacklist" style="margin: 0; font-size: 13px;">Blacklist</label>
+
+                    <input type="checkbox" id="forcepause" style="width: 18px; height: 18px; margin-left: 20px;">
+                    <label for="forcepause" style="margin: 0; font-size: 13px;">Forcepause</label>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn-refresh" onclick="refreshForm()">Refresh</button>
+                <button class="btn-submit" onclick="saveAndFillCampaignQuestions()">Save Basic Info and Fill Campaign Questions</button>
+            </div>
+        </div>
+
+        <!-- Right Panel - Contact Queue & Dynamic Form -->
+        <div class="right-panel">
+            <!-- Contact Queue -->
+            <div class="queue-section">
+                <div class="queue-header">
+                    <div class="queue-title">📞 Contact Queue</div>
+                    <div class="queue-count">Remaining: 77</div>
+                </div>
+
+                <div class="contact-card active">
+                    <div class="contact-name">Shanmugam</div>
+                    <div class="contact-phone">📱 9751446733</div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-name">Priya Sharma</div>
+                    <div class="contact-phone">📱 9876543210</div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-name">Vijay Kumar</div>
+                    <div class="contact-phone">📱 9988776655</div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-name">Lakshmi Devi</div>
+                    <div class="contact-phone">📱 9876512345</div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-name">Ramesh Babu</div>
+                    <div class="contact-phone">📱 9123456789</div>
+                </div>
+            </div>
+
+            <!-- Dynamic Form Section (iframe) -->
+            <div class="dynamic-form-section">
+                <div class="dynamic-form-header">📝 Campaign Questions (Dynamic Form)</div>
+                
+                <div id="dynamicFormContainer">
+                    <div class="form-disabled-overlay">
+                        <div style="font-size: 48px; margin-bottom: 15px;">📋</div>
+                        <div style="font-size: 15px; font-weight: 600; color: #666; margin-bottom: 10px;">
+                            Dynamic Form Disabled
+                        </div>
+                        <div style="font-size: 13px; color: #999;">
+                            This form will be enabled when:
+                            <br>1. Call is connected
+                            <br>2. Basic details are saved
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call Status Modal (For Non-Connected Calls) -->
+    <div id="callStatusModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">📞 Update Call Status</div>
+            
+            <div style="margin-bottom: 20px; padding: 12px; background: #fff3e0; border-radius: 6px; font-size: 13px; color: #e65100;">
+                ⚠️ Call was not connected. Please select the appropriate status.
+            </div>
+
+            <div class="status-options">
+                <div class="status-option" onclick="selectCallStatus('not-picked')">
+                    <div class="status-icon">📵</div>
+                    <div class="status-text">Not Picked</div>
+                </div>
+
+                <div class="status-option" onclick="selectCallStatus('not-reachable')">
+                    <div class="status-icon">📡</div>
+                    <div class="status-text">Not Reachable</div>
+                </div>
+
+                <div class="status-option" onclick="selectCallStatus('switched-off')">
+                    <div class="status-icon">📴</div>
+                    <div class="status-text">Switched Off</div>
+                </div>
+
+                <div class="status-option" onclick="selectCallStatus('busy')">
+                    <div class="status-icon">📞</div>
+                    <div class="status-text">Busy</div>
+                </div>
+
+                <div class="status-option" onclick="selectCallStatus('call-later')">
+                    <div class="status-icon">🔔</div>
+                    <div class="status-text">Call Later (Schedule Callback)</div>
+                </div>
+            </div>
+
+            <div class="callback-section" id="callbackSection">
+                <div style="font-weight: 600; margin-bottom: 12px; color: #e65100;">
+                    📅 Schedule Callback
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="display: block; font-size: 12px; margin-bottom: 5px; color: #666;">Date</label>
+                        <input type="date" id="callbackDate" class="form-input" style="width: 100%;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 12px; margin-bottom: 5px; color: #666;">Time</label>
+                        <input type="time" id="callbackTime" class="form-input" style="width: 100%;">
+                    </div>
+                </div>
+                <div style="font-size: 11px; color: #999; margin-top: 8px;">
+                    ℹ️ Callback must be scheduled for today or next day only, within campaign validity period.
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-modal btn-cancel" onclick="closeCallStatusModal()">Cancel</button>
+                <button class="btn-modal btn-confirm" onclick="submitCallStatus()">Submit Status</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentCallStatus = null;
+        let isCallConnected = false;
+        let callStartTime = null;
+        let timerInterval = null;
+        let autoDialInterval = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+            
+            // Set callback date restrictions
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const callbackDateInput = document.getElementById('callbackDate');
+            callbackDateInput.setAttribute('min', today.toISOString().split('T')[0]);
+            callbackDateInput.setAttribute('max', tomorrow.toISOString().split('T')[0]);
+
+            // Simulate auto-dial after 30 seconds
+            startAutoDial();
+        });
+
+        // Update current time
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0];
+            document.getElementById('currentTime').textContent = timeStr;
+        }
+
+        // Start Auto-Dial
+        function startAutoDial() {
+            autoDialInterval = setInterval(() => {
+                if (!isCallConnected) {
+                    simulateIncomingCall();
+                }
+            }, 30000); // Auto-dial every 30 seconds
+        }
+
+        // Simulate Incoming Call
+        function simulateIncomingCall() {
+            document.getElementById('dialerStatus').textContent = 'Incoming Call...';
+            document.getElementById('currentNumber').textContent = '9751446733';
+            
+            // Play sound (simulated)
+            console.log('📞 Ring... Ring...');
+        }
+
+        // Answer Call
+        function answerCall() {
+            isCallConnected = true;
+            callStartTime = new Date();
+            
+            document.getElementById('dialerStatus').textContent = 'Connected';
+            
+            // Start call timer
+            startCallTimer();
+            
+            // Enable form
+            enableBasicDetailsForm();
+            
+            alert('✓ Call Connected!\n\nPlease fill the basic details and campaign questions.');
+        }
+
+        // Start Call Timer
+        function startCallTimer() {
+            timerInterval = setInterval(() => {
+                if (callStartTime) {
+                    const elapsed = new Date() - callStartTime;
+                    const hours = Math.floor(elapsed / 3600000);
+                    const minutes = Math.floor((elapsed % 3600000) / 60000);
+                    const seconds = Math.floor((elapsed % 60000) / 1000);
+                    
+                    const timeStr = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                    document.getElementById('callTimer').textContent = timeStr;
+                }
+            }, 1000);
+        }
+
+        // Hold Call
+        function holdCall() {
+            if (!isCallConnected) {
+                alert('⚠️ No active call to hold');
+                return;
+            }
+            document.getElementById('dialerStatus').textContent = 'On Hold';
+            alert('📞 Call placed on hold');
+        }
+
+        // Hangup Call
+        function hangupCall() {
+            if (!isCallConnected) {
+                // Call was not connected - show status modal
+                openCallStatusModal();
+                return;
+            }
+
+            // Call was connected - normal hangup
+            if (confirm('End this call?')) {
+                endCall();
+            }
+        }
+
+        // End Call
+        function endCall() {
+            isCallConnected = false;
+            clearInterval(timerInterval);
+            
+            document.getElementById('dialerStatus').textContent = 'On Hook';
+            document.getElementById('callTimer').textContent = '00:00:00';
+            callStartTime = null;
+            
+            // Move to next contact
+            alert('✓ Call ended. Moving to next contact...');
+            loadNextContact();
+        }
+
+        // Enable Basic Details Form
+        function enableBasicDetailsForm() {
+            const inputs = document.querySelectorAll('.form-input:not([disabled]), .form-select');
+            inputs.forEach(input => {
+                input.removeAttribute('disabled');
+            });
+        }
+
+        // Save Basic Info and Open Dynamic Form
+        function saveAndFillCampaignQuestions() {
+            if (!isCallConnected) {
+                alert('⚠️ Please connect the call first before filling the form');
+                return;
+            }
+
+            // Validate required fields
+            const name = document.getElementById('contactName').value;
+            const phone = document.getElementById('contactPhone').value;
+            
+            if (!name || !phone) {
+                alert('⚠️ Please fill all required fields (marked with *)');
+                return;
+            }
+
+            // Save basic details
+            alert('✓ Basic details saved successfully!\n\nNow fill the campaign-specific questions in the Dynamic Form on the right panel.');
+
+            // Load dynamic form iframe
+            loadDynamicForm();
+        }
+
+        // Load Dynamic Form (iframe from TNEMIS)
+        function loadDynamicForm() {
+            const container = document.getElementById('dynamicFormContainer');
+            
+            // Create iframe with TNEMIS dynamic form
+            container.innerHTML = `
+                <div class="iframe-container">
+                    <iframe src="about:blank" id="dynamicFormIframe"></iframe>
+                </div>
+                <div style="margin-top: 15px; text-align: center;">
+                    <button class="btn-submit" onclick="submitDynamicForm()" style="width: 100%;">
+                        ✓ Submit Form & Close Call
+                    </button>
+                </div>
+            `;
+
+            // Simulate loading TNEMIS dynamic form
+            setTimeout(() => {
+                const iframe = document.getElementById('dynamicFormIframe');
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                
+                iframeDoc.open();
+                iframeDoc.write(`
+                    <html>
+                    <head>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                padding: 20px;
+                                background: #f9f9f9;
+                            }
+                            .question-block {
+                                background: white;
+                                padding: 20px;
+                                margin-bottom: 15px;
+                                border-radius: 8px;
+                                border-left: 4px solid #2c3e90;
+                            }
+                            label {
+                                display: block;
+                                font-weight: 600;
+                                margin-bottom: 10px;
+                                color: #333;
+                            }
+                            input[type="text"], select, textarea {
+                                width: 100%;
+                                padding: 10px;
+                                border: 1px solid #ddd;
+                                border-radius: 6px;
+                                font-size: 14px;
+                            }
+                            .required { color: #f44336; }
+                        </style>
+                    </head>
+                    <body>
+                        <h3 style="color: #2c3e90; margin-bottom: 20px;">📋 Campaign Questions - ST0012</h3>
+                        
+                        <div class="question-block">
+                            <label>Q1: Has the student paid the school fees? <span class="required">*</span></label>
+                            <select>
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+
+                        <div class="question-block">
+                            <label>If Yes - Collect Receipt Number:</label>
+                            <input type="text" placeholder="Enter receipt number">
+                        </div>
+
+                        <div class="question-block">
+                            <label>Q2: What is the reason for non-payment? <span class="required">*</span></label>
+                            <textarea rows="3" placeholder="Enter reason"></textarea>
+                        </div>
+
+                        <div class="question-block">
+                            <label>Q3: When can the payment be expected? <span class="required">*</span></label>
+                            <select>
+                                <option value="">Select</option>
+                                <option value="1week">Within 1 week</option>
+                                <option value="1month">Within 1 month</option>
+                                <option value="more">More than 1 month</option>
+                            </select>
+                        </div>
+
+                        <div class="question-block">
+                            <label>Q4: Additional Comments:</label>
+                            <textarea rows="3" placeholder="Enter any additional comments"></textarea>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                iframeDoc.close();
+            }, 500);
+        }
+
+        // Submit Dynamic Form
+        function submitDynamicForm() {
+            if (confirm('✓ Submit form and close call?\n\nMake sure all required fields are filled.')) {
+                alert('✓ Form submitted successfully!\n\n' +
+                      '✓ Basic details saved\n' +
+                      '✓ Campaign questions answered\n' +
+                      '✓ Call data stored in backend\n\n' +
+                      'Moving to next contact...');
+                
+                endCall();
+            }
+        }
+
+        // Refresh Form
+        function refreshForm() {
+            if (confirm('Refresh the form? Unsaved data will be lost.')) {
+                location.reload();
+            }
+        }
+
+        // Open Call Status Modal (Non-Connected Calls)
+        function openCallStatusModal() {
+            document.getElementById('callStatusModal').classList.add('show');
+        }
+
+        // Close Call Status Modal
+        function closeCallStatusModal() {
+            document.getElementById('callStatusModal').classList.remove('show');
+            currentCallStatus = null;
+            
+            // Clear selections
+            document.querySelectorAll('.status-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.getElementById('callbackSection').classList.remove('show');
+        }
+
+        // Select Call Status
+        function selectCallStatus(status) {
+            currentCallStatus = status;
+            
+            // Update UI
+            document.querySelectorAll('.status-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+
+            // Show callback section if "call-later" is selected
+            if (status === 'call-later') {
+                document.getElementById('callbackSection').classList.add('show');
+            } else {
+                document.getElementById('callbackSection').classList.remove('show');
+            }
+        }
+
+        // Submit Call Status
+        function submitCallStatus() {
+            if (!currentCallStatus) {
+                alert('⚠️ Please select a call status');
+                return;
+            }
+
+            // Validate callback date/time if "call-later" is selected
+            if (currentCallStatus === 'call-later') {
+                const callbackDate = document.getElementById('callbackDate').value;
+                const callbackTime = document.getElementById('callbackTime').value;
+                
+                if (!callbackDate || !callbackTime) {
+                    alert('⚠️ Please select callback date and time');
+                    return;
+                }
+            }
+
+            // Submit status
+            const statusText = event.currentTarget.closest('.modal-content').querySelector('.status-option.selected .status-text').textContent;
+            
+            if (currentCallStatus === 'call-later') {
+                const callbackDate = document.getElementById('callbackDate').value;
+                const callbackTime = document.getElementById('callbackTime').value;
+                alert(`✓ Call status updated: ${statusText}\n\nCallback scheduled for: ${callbackDate} at ${callbackTime}\n\nThis contact will be available for re-attempt.`);
+            } else {
+                alert(`✓ Call status updated: ${statusText}\n\nAttempt count incremented. This contact will be available for re-attempt.`);
+            }
+
+            closeCallStatusModal();
+            loadNextContact();
+        }
+
+        // Load Next Contact
+        function loadNextContact() {
+            // Reset dialer
+            document.getElementById('dialerStatus').textContent = 'On Hook';
+            document.getElementById('callTimer').textContent = '00:00:00';
+            
+            // Simulate moving to next contact
+            setTimeout(() => {
+                const contactCards = document.querySelectorAll('.contact-card');
+                contactCards.forEach((card, index) => {
+                    card.classList.remove('active');
+                    if (index === 1) {
+                        card.classList.add('active');
+                        const phone = card.querySelector('.contact-phone').textContent.replace('📱 ', '');
+                        document.getElementById('currentNumber').textContent = phone;
+                    }
+                });
+                
+                // Update form with next contact
+                document.getElementById('contactName').value = 'Priya Sharma';
+                document.getElementById('contactPhone').value = '9876543210';
+                
+                // Reset dynamic form
+                document.getElementById('dynamicFormContainer').innerHTML = `
+                    <div class="form-disabled-overlay">
+                        <div style="font-size: 48px; margin-bottom: 15px;">📋</div>
+                        <div style="font-size: 15px; font-weight: 600; color: #666; margin-bottom: 10px;">
+                            Dynamic Form Disabled
+                        </div>
+                        <div style="font-size: 13px; color: #999;">
+                            This form will be enabled when:
+                            <br>1. Call is connected
+                            <br>2. Basic details are saved
+                        </div>
+                    </div>
+                `;
+
+                // Auto-dial next contact after 5 seconds
+                setTimeout(() => {
+                    simulateIncomingCall();
+                }, 5000);
+            }, 1000);
+        }
+
+        // Take Break
+        function takeBreak() {
+            if (isCallConnected) {
+                alert('⚠️ Cannot take break while on an active call');
+                return;
+            }
+
+            if (confirm('☕ Take a break?\n\nYou will be marked as unavailable.')) {
+                clearInterval(autoDialInterval);
+                document.querySelector('.agent-status span:last-child').textContent = 'On Break';
+                document.querySelector('.status-dot').style.backgroundColor = '#ff9800';
+                
+                alert('✓ Break started\n\nClick "End Break" when you return.');
+                
+                // Simulate break timer
+                setTimeout(() => {
+                    if (confirm('Break time over. Return to available status?')) {
+                        document.querySelector('.agent-status span:last-child').textContent = 'Available';
+                        document.querySelector('.status-dot').style.backgroundColor = '#4caf50';
+                        startAutoDial();
+                    }
+                }, 10000); // 10 seconds for demo
+            }
+        }
+
+        // Take Lunch
+        function takeLunch() {
+            if (isCallConnected) {
+                alert('⚠️ Cannot take lunch while on an active call');
+                return;
+            }
+
+            if (confirm('🍽️ Take lunch break?\n\nYou will be marked as unavailable for 30 minutes.')) {
+                clearInterval(autoDialInterval);
+                document.querySelector('.agent-status span:last-child').textContent = 'On Lunch';
+                document.querySelector('.status-dot').style.backgroundColor = '#9c27b0';
+                
+                alert('✓ Lunch break started\n\nTimer: 30 minutes');
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                closeCallStatusModal();
+            }
+        }
+    </script>
+</body>
+</html>

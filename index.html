@@ -33,7 +33,7 @@
       padding: 40px 50px;
       border-radius: 16px;
       text-align: center;
-      width: 450px;
+      width: 480px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
 
@@ -76,13 +76,27 @@
     .btn-deo {
       background: linear-gradient(135deg, #f7971e, #ffd200);
       box-shadow: 0 0 15px rgba(255, 210, 0, 0.7);
-      animation-delay: 0.5s;
+      animation-delay: 0.4s;
     }
 
     .btn-tl {
       background: linear-gradient(135deg, #8e2de2, #4a00e0);
       box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
-      animation-delay: 1s;
+      animation-delay: 0.8s;
+    }
+
+    /* NEW SCREEN 4 */
+    .btn-mentor {
+      background: linear-gradient(135deg, #11998e, #38ef7d);
+      box-shadow: 0 0 15px rgba(56, 239, 125, 0.7);
+      animation-delay: 1.2s;
+    }
+
+    /* NEW SCREEN 5 */
+    .btn-dashboard {
+      background: linear-gradient(135deg, #ff512f, #dd2476);
+      box-shadow: 0 0 15px rgba(221, 36, 118, 0.7);
+      animation-delay: 1.6s;
     }
 
     @keyframes blink {
@@ -106,19 +120,32 @@
     <p>Please select the required screen to continue</p>
 
     <button class="btn btn-stakeholder"
-  onclick="goToScreen('stakeholder.html')">
-  📞 Stakeholder Request
-</button>
+      onclick="goToScreen('14417 stakholder final Page.html')">
+      📞 Stakeholder Request
+    </button>
 
-   <button class="btn btn-deo"
-  onclick="goToScreen('deo.html')">
-  🏢 DEO Page
-</button>
+    <button class="btn btn-deo"
+      onclick="goToScreen('DEO Page.new.html')">
+      🏢 DEO Page
+    </button>
 
     <button class="btn btn-tl"
-  onclick="goToScreen('callcenter-tl.html')">
-  👨‍💼 Call Center TL Page
-</button>
+      onclick="goToScreen('TL Page.html')">
+      👨‍💼 Call Center TL Page
+    </button>
+
+    <!-- SCREEN 4 -->
+    <button class="btn btn-mentor"
+      onclick="goToScreen('Mentor Infocomm Panel.html')">
+      🧑‍🏫 Mentor Infocomm Panel
+    </button>
+
+    <!-- SCREEN 5 -->
+    <button class="btn btn-dashboard"
+      onclick="goToScreen('Dashboard.html')">
+      📊 Dashboard
+    </button>
+
     <footer>
       © 2026 | Support System
     </footer>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Live Monitoring Dashboard</title>
+    <title>Agent Live Monitoring Dashboard - Final</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         * {
@@ -18,7 +18,6 @@
             color: #333;
         }
 
-        /* Top Navigation */
         .top-nav {
             background-color: #2c3e90;
             color: white;
@@ -74,7 +73,6 @@
             50% { opacity: 0.5; transform: scale(1.2); }
         }
 
-        /* Page Header */
         .page-header {
             background: white;
             padding: 20px 30px;
@@ -149,25 +147,23 @@
             background-color: #388e3c;
         }
 
-        /* Container */
         .container {
             max-width: 1800px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        /* Summary Cards */
         .summary-cards {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 12px;
             margin-bottom: 25px;
         }
 
         .summary-card {
             background: white;
             border-radius: 10px;
-            padding: 20px;
+            padding: 18px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             transition: all 0.3s;
         }
@@ -181,34 +177,33 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .card-icon {
-            font-size: 24px;
+            font-size: 22px;
         }
 
         .card-label {
-            font-size: 11px;
+            font-size: 10px;
             color: #666;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .card-value {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
             color: #2c3e90;
         }
 
         .card-subtext {
-            font-size: 11px;
+            font-size: 10px;
             color: #999;
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
-        /* Agent Grid View */
         .view-toggle {
             display: flex;
             gap: 10px;
@@ -234,14 +229,14 @@
         .agents-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            gap: 18px;
             margin-bottom: 30px;
         }
 
         .agent-card {
             background: white;
             border-radius: 12px;
-            padding: 20px;
+            padding: 18px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             transition: all 0.3s;
             cursor: pointer;
@@ -253,95 +248,69 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .agent-card.on-call {
-            border-left-color: #4caf50;
-        }
-
-        .agent-card.idle {
-            border-left-color: #ff9800;
-        }
-
-        .agent-card.break {
-            border-left-color: #9e9e9e;
-        }
-
-        .agent-card.hold {
-            border-left-color: #2196f3;
-        }
+        .agent-card.on-call { border-left-color: #4caf50; }
+        .agent-card.idle { border-left-color: #ff9800; }
+        .agent-card.break { border-left-color: #9e9e9e; }
+        .agent-card.hold { border-left-color: #2196f3; }
 
         .agent-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .agent-avatar {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
         }
 
         .agent-info {
             flex: 1;
-            margin-left: 12px;
+            margin-left: 10px;
         }
 
         .agent-name {
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
             color: #333;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .agent-id {
-            font-size: 11px;
+            font-size: 10px;
             color: #999;
         }
 
         .agent-status-badge {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
+            gap: 5px;
+            padding: 5px 10px;
             border-radius: 20px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
         }
 
-        .status-badge-on-call {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .status-badge-idle {
-            background-color: #fff3e0;
-            color: #e65100;
-        }
-
-        .status-badge-break {
-            background-color: #f5f5f5;
-            color: #666;
-        }
-
-        .status-badge-hold {
-            background-color: #e3f2fd;
-            color: #1976d2;
-        }
+        .status-badge-on-call { background-color: #e8f5e9; color: #2e7d32; }
+        .status-badge-idle { background-color: #fff3e0; color: #e65100; }
+        .status-badge-break { background-color: #f5f5f5; color: #666; }
+        .status-badge-hold { background-color: #e3f2fd; color: #1976d2; }
 
         .agent-metrics {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-            padding-top: 15px;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
             border-top: 1px solid #f0f0f0;
         }
 
@@ -350,29 +319,39 @@
         }
 
         .metric-label {
-            font-size: 10px;
+            font-size: 9px;
             color: #999;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .metric-value {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: #2c3e90;
         }
 
+        .metric-value.inbound { color: #2196f3; }
+        .metric-value.outbound { color: #ff9800; }
+
         .agent-timer {
             text-align: center;
-            margin-top: 12px;
-            padding: 8px;
+            margin-top: 10px;
+            padding: 6px;
             background: #f8f9fa;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 11px;
             color: #666;
         }
 
-        /* Table View */
+        .call-type-breakdown {
+            font-size: 9px;
+            color: #999;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #f5f5f5;
+        }
+
         .agents-table-section {
             background: white;
             border-radius: 12px;
@@ -395,9 +374,9 @@
         }
 
         .data-table th {
-            padding: 12px 10px;
+            padding: 11px 8px;
             text-align: left;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             color: #666;
             text-transform: uppercase;
@@ -406,8 +385,8 @@
         }
 
         .data-table td {
-            padding: 12px 10px;
-            font-size: 13px;
+            padding: 11px 8px;
+            font-size: 12px;
             color: #333;
             border-bottom: 1px solid #f0f0f0;
         }
@@ -424,10 +403,10 @@
         .view-detail-btn {
             background-color: #2c3e90;
             color: white;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border: none;
             border-radius: 4px;
-            font-size: 11px;
+            font-size: 10px;
             cursor: pointer;
         }
 
@@ -435,7 +414,6 @@
             background-color: #1e2a5e;
         }
 
-        /* Agent Detail Modal */
         .modal {
             display: none;
             position: fixed;
@@ -494,32 +472,37 @@
 
         .detail-summary {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 18px;
             margin-bottom: 30px;
         }
 
         .detail-card {
             background: #f8f9fa;
             border-radius: 8px;
-            padding: 20px;
+            padding: 18px;
             border-left: 4px solid #2c3e90;
         }
 
+        .detail-card.inbound { border-left-color: #2196f3; }
+        .detail-card.outbound { border-left-color: #ff9800; }
+
         .detail-label {
-            font-size: 12px;
+            font-size: 11px;
             color: #666;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             text-transform: uppercase;
         }
 
         .detail-value {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
             color: #2c3e90;
         }
 
-        /* Day-wise Performance Table */
+        .detail-card.inbound .detail-value { color: #2196f3; }
+        .detail-card.outbound .detail-value { color: #ff9800; }
+
         .daywise-section {
             background: white;
             border-radius: 8px;
@@ -534,7 +517,6 @@
             margin-bottom: 15px;
         }
 
-        /* Charts */
         .charts-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -560,29 +542,14 @@
             display: inline-block;
             padding: 4px 10px;
             border-radius: 12px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
         }
 
-        .badge-success {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .badge-warning {
-            background-color: #fff3e0;
-            color: #e65100;
-        }
-
-        .badge-info {
-            background-color: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .badge-secondary {
-            background-color: #f5f5f5;
-            color: #666;
-        }
+        .badge-success { background-color: #e8f5e9; color: #2e7d32; }
+        .badge-warning { background-color: #fff3e0; color: #e65100; }
+        .badge-info { background-color: #e3f2fd; color: #1976d2; }
+        .badge-secondary { background-color: #f5f5f5; color: #666; }
 
         .status-dot {
             width: 10px;
@@ -592,30 +559,19 @@
             margin-right: 5px;
         }
 
-        .dot-green {
-            background-color: #4caf50;
-        }
-
-        .dot-orange {
-            background-color: #ff9800;
-        }
-
-        .dot-grey {
-            background-color: #9e9e9e;
-        }
-
-        .dot-blue {
-            background-color: #2196f3;
-        }
+        .dot-green { background-color: #4caf50; }
+        .dot-orange { background-color: #ff9800; }
+        .dot-grey { background-color: #9e9e9e; }
+        .dot-blue { background-color: #2196f3; }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
     <div class="top-nav">
         <div class="nav-left">
             <div class="nav-item">🏠 Home</div>
             <div class="nav-item">📊 Campaign Dashboard</div>
             <div class="nav-item active">👥 Agent Dashboard</div>
+            <div class="nav-item">📺 Live Monitor</div>
             <div class="nav-item">📋 Reports</div>
         </div>
         <div class="nav-left">
@@ -627,20 +583,19 @@
         </div>
     </div>
 
-    <!-- Page Header -->
     <div class="page-header">
         <div class="header-content">
             <div>
                 <div class="page-title">👥 Agent-wise Live Monitoring Dashboard</div>
-                <div class="page-subtitle">Real-time agent performance monitoring and analytics</div>
+                <div class="page-subtitle">Real-time agent performance with inbound and outbound call breakdown</div>
             </div>
             <div class="header-actions">
                 <div class="filter-group">
-                    <span class="filter-label">From Date:</span>
+                    <span class="filter-label">From:</span>
                     <input type="date" class="filter-input" id="fromDate">
                 </div>
                 <div class="filter-group">
-                    <span class="filter-label">To Date:</span>
+                    <span class="filter-label">To:</span>
                     <input type="date" class="filter-input" id="toDate">
                 </div>
                 <div class="filter-group">
@@ -649,7 +604,14 @@
                         <option value="all">All Campaigns</option>
                         <option value="ST0012">ST0012</option>
                         <option value="ST0013">ST0013</option>
-                        <option value="ST0015">ST0015</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Type:</span>
+                    <select class="filter-select" id="callTypeFilter">
+                        <option value="all">All Calls</option>
+                        <option value="inbound">Inbound Only</option>
+                        <option value="outbound">Outbound Only</option>
                     </select>
                 </div>
                 <button class="refresh-btn" onclick="refreshData()">🔄 Refresh</button>
@@ -658,9 +620,7 @@
         </div>
     </div>
 
-    <!-- Main Container -->
     <div class="container">
-        <!-- Summary Cards -->
         <div class="summary-cards">
             <div class="summary-card">
                 <div class="card-label">Total Agents</div>
@@ -688,20 +648,29 @@
 
             <div class="summary-card">
                 <div class="card-header">
-                    <div class="card-label">On Break</div>
-                    <div class="card-icon" style="color: #9e9e9e;">☕</div>
+                    <div class="card-label">Total Calls</div>
+                    <div class="card-icon">📱</div>
                 </div>
-                <div class="card-value" style="color: #9e9e9e;">5</div>
-                <div class="card-subtext">16% on break</div>
+                <div class="card-value">1,536</div>
+                <div class="card-subtext">Today's total</div>
             </div>
 
             <div class="summary-card">
                 <div class="card-header">
-                    <div class="card-label">On Hold</div>
-                    <div class="card-icon" style="color: #2196f3;">⏸️</div>
+                    <div class="card-label">Inbound</div>
+                    <div class="card-icon" style="color: #2196f3;">📲</div>
                 </div>
-                <div class="card-value" style="color: #2196f3;">3</div>
-                <div class="card-subtext">9% on hold</div>
+                <div class="card-value" style="color: #2196f3;">384</div>
+                <div class="card-subtext">25% of total</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="card-header">
+                    <div class="card-label">Outbound</div>
+                    <div class="card-icon" style="color: #ff9800;">📤</div>
+                </div>
+                <div class="card-value" style="color: #ff9800;">1,152</div>
+                <div class="card-subtext">75% of total</div>
             </div>
 
             <div class="summary-card">
@@ -709,20 +678,26 @@
                     <div class="card-label">Avg. AHT</div>
                     <div class="card-icon">⏱️</div>
                 </div>
-                <div class="card-value" style="font-size: 24px;">4:32</div>
+                <div class="card-value" style="font-size: 22px;">4:32</div>
                 <div class="card-subtext">Minutes per call</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="card-header">
+                    <div class="card-label">Connected</div>
+                    <div class="card-icon" style="color: #4caf50;">✓</div>
+                </div>
+                <div class="card-value" style="color: #4caf50;">87%</div>
+                <div class="card-subtext">Connection rate</div>
             </div>
         </div>
 
-        <!-- View Toggle -->
         <div class="view-toggle">
             <button class="toggle-btn active" onclick="switchView('grid')">🔲 Grid View</button>
             <button class="toggle-btn" onclick="switchView('table')">📊 Table View</button>
         </div>
 
-        <!-- Agents Grid View -->
         <div class="agents-grid" id="agentsGrid">
-            <!-- Agent Card 1 -->
             <div class="agent-card on-call" onclick="viewAgentDetail('AG001')">
                 <div class="agent-header">
                     <div style="display: flex; align-items: center;">
@@ -739,7 +714,7 @@
                 </div>
                 <div class="agent-metrics">
                     <div class="metric-item">
-                        <div class="metric-label">Attempted</div>
+                        <div class="metric-label">Total</div>
                         <div class="metric-value">48</div>
                     </div>
                     <div class="metric-item">
@@ -747,20 +722,22 @@
                         <div class="metric-value">42</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-label">AHT</div>
-                        <div class="metric-value">4:58</div>
+                        <div class="metric-label">Inbound</div>
+                        <div class="metric-value inbound">12</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-label">Forms</div>
-                        <div class="metric-value">40</div>
+                        <div class="metric-label">Outbound</div>
+                        <div class="metric-value outbound">36</div>
                     </div>
+                </div>
+                <div class="call-type-breakdown">
+                    AHT: 4:58 | In: 4:22 | Out: 5:15
                 </div>
                 <div class="agent-timer">
                     ⏱️ Current Call: 03:45
                 </div>
             </div>
 
-            <!-- Agent Card 2 -->
             <div class="agent-card idle" onclick="viewAgentDetail('AG002')">
                 <div class="agent-header">
                     <div style="display: flex; align-items: center;">
@@ -777,7 +754,7 @@
                 </div>
                 <div class="agent-metrics">
                     <div class="metric-item">
-                        <div class="metric-label">Attempted</div>
+                        <div class="metric-label">Total</div>
                         <div class="metric-value">52</div>
                     </div>
                     <div class="metric-item">
@@ -785,20 +762,22 @@
                         <div class="metric-value">47</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-label">AHT</div>
-                        <div class="metric-value">5:12</div>
+                        <div class="metric-label">Inbound</div>
+                        <div class="metric-value inbound">15</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-label">Forms</div>
-                        <div class="metric-value">45</div>
+                        <div class="metric-label">Outbound</div>
+                        <div class="metric-value outbound">37</div>
                     </div>
+                </div>
+                <div class="call-type-breakdown">
+                    AHT: 5:12 | In: 4:45 | Out: 5:28
                 </div>
                 <div class="agent-timer">
                     ⏱️ Idle Time: 02:15
                 </div>
             </div>
 
-            <!-- Agent Card 3 -->
             <div class="agent-card on-call" onclick="viewAgentDetail('AG003')">
                 <div class="agent-header">
                     <div style="display: flex; align-items: center;">
@@ -815,7 +794,7 @@
                 </div>
                 <div class="agent-metrics">
                     <div class="metric-item">
-                        <div class="metric-label">Attempted</div>
+                        <div class="metric-label">Total</div>
                         <div class="metric-value">45</div>
                     </div>
                     <div class="metric-item">
@@ -823,20 +802,22 @@
                         <div class="metric-value">38</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-label">AHT</div>
-                        <div class="metric-value">5:30</div>
+                        <div class="metric-label">Inbound</div>
+                        <div class="metric-value inbound">10</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-label">Forms</div>
-                        <div class="metric-value">36</div>
+                        <div class="metric-label">Outbound</div>
+                        <div class="metric-value outbound">35</div>
                     </div>
+                </div>
+                <div class="call-type-breakdown">
+                    AHT: 5:30 | In: 4:50 | Out: 5:45
                 </div>
                 <div class="agent-timer">
                     ⏱️ Current Call: 05:22
                 </div>
             </div>
 
-            <!-- Agent Card 4 -->
             <div class="agent-card break" onclick="viewAgentDetail('AG004')">
                 <div class="agent-header">
                     <div style="display: flex; align-items: center;">
@@ -853,7 +834,7 @@
                 </div>
                 <div class="agent-metrics">
                     <div class="metric-item">
-                        <div class="metric-label">Attempted</div>
+                        <div class="metric-label">Total</div>
                         <div class="metric-value">41</div>
                     </div>
                     <div class="metric-item">
@@ -861,173 +842,23 @@
                         <div class="metric-value">36</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-label">AHT</div>
-                        <div class="metric-value">4:45</div>
+                        <div class="metric-label">Inbound</div>
+                        <div class="metric-value inbound">11</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-label">Forms</div>
-                        <div class="metric-value">34</div>
+                        <div class="metric-label">Outbound</div>
+                        <div class="metric-value outbound">30</div>
                     </div>
+                </div>
+                <div class="call-type-breakdown">
+                    AHT: 4:45 | In: 4:18 | Out: 4:58
                 </div>
                 <div class="agent-timer">
                     ☕ Break Time: 12:30
                 </div>
             </div>
-
-            <!-- Agent Card 5 -->
-            <div class="agent-card on-call" onclick="viewAgentDetail('AG005')">
-                <div class="agent-header">
-                    <div style="display: flex; align-items: center;">
-                        <div class="agent-avatar">RB</div>
-                        <div class="agent-info">
-                            <div class="agent-name">Ramesh Babu</div>
-                            <div class="agent-id">AG005</div>
-                        </div>
-                    </div>
-                    <div class="agent-status-badge status-badge-on-call">
-                        <span class="status-dot dot-green"></span>
-                        On Call
-                    </div>
-                </div>
-                <div class="agent-metrics">
-                    <div class="metric-item">
-                        <div class="metric-label">Attempted</div>
-                        <div class="metric-value">50</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">Connected</div>
-                        <div class="metric-value">44</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">AHT</div>
-                        <div class="metric-value">5:05</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">Forms</div>
-                        <div class="metric-value">42</div>
-                    </div>
-                </div>
-                <div class="agent-timer">
-                    ⏱️ Current Call: 02:18
-                </div>
-            </div>
-
-            <!-- Agent Card 6 -->
-            <div class="agent-card hold" onclick="viewAgentDetail('AG006')">
-                <div class="agent-header">
-                    <div style="display: flex; align-items: center;">
-                        <div class="agent-avatar">SR</div>
-                        <div class="agent-info">
-                            <div class="agent-name">Sunita Reddy</div>
-                            <div class="agent-id">AG006</div>
-                        </div>
-                    </div>
-                    <div class="agent-status-badge status-badge-hold">
-                        <span class="status-dot dot-blue"></span>
-                        On Hold
-                    </div>
-                </div>
-                <div class="agent-metrics">
-                    <div class="metric-item">
-                        <div class="metric-label">Attempted</div>
-                        <div class="metric-value">46</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">Connected</div>
-                        <div class="metric-value">41</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">AHT</div>
-                        <div class="metric-value">4:52</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">Forms</div>
-                        <div class="metric-value">39</div>
-                    </div>
-                </div>
-                <div class="agent-timer">
-                    ⏸️ Hold Time: 01:35
-                </div>
-            </div>
-
-            <!-- Agent Card 7 -->
-            <div class="agent-card idle" onclick="viewAgentDetail('AG007')">
-                <div class="agent-header">
-                    <div style="display: flex; align-items: center;">
-                        <div class="agent-avatar">AS</div>
-                        <div class="agent-info">
-                            <div class="agent-name">Arjun Singh</div>
-                            <div class="agent-id">AG007</div>
-                        </div>
-                    </div>
-                    <div class="agent-status-badge status-badge-idle">
-                        <span class="status-dot dot-orange"></span>
-                        Idle
-                    </div>
-                </div>
-                <div class="agent-metrics">
-                    <div class="metric-item">
-                        <div class="metric-label">Attempted</div>
-                        <div class="metric-value">39</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">Connected</div>
-                        <div class="metric-value">34</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">AHT</div>
-                        <div class="metric-value">5:20</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">Forms</div>
-                        <div class="metric-value">32</div>
-                    </div>
-                </div>
-                <div class="agent-timer">
-                    ⏱️ Idle Time: 00:45
-                </div>
-            </div>
-
-            <!-- Agent Card 8 -->
-            <div class="agent-card on-call" onclick="viewAgentDetail('AG008')">
-                <div class="agent-header">
-                    <div style="display: flex; align-items: center;">
-                        <div class="agent-avatar">MP</div>
-                        <div class="agent-info">
-                            <div class="agent-name">Meena Patel</div>
-                            <div class="agent-id">AG008</div>
-                        </div>
-                    </div>
-                    <div class="agent-status-badge status-badge-on-call">
-                        <span class="status-dot dot-green"></span>
-                        On Call
-                    </div>
-                </div>
-                <div class="agent-metrics">
-                    <div class="metric-item">
-                        <div class="metric-label">Attempted</div>
-                        <div class="metric-value">55</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">Connected</div>
-                        <div class="metric-value">48</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">AHT</div>
-                        <div class="metric-value">4:40</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">Forms</div>
-                        <div class="metric-value">46</div>
-                    </div>
-                </div>
-                <div class="agent-timer">
-                    ⏱️ Current Call: 04:10
-                </div>
-            </div>
         </div>
 
-        <!-- Agents Table View -->
         <div class="agents-table-section" id="agentsTable">
             <table class="data-table">
                 <thead>
@@ -1036,12 +867,16 @@
                         <th>Agent Name</th>
                         <th>Status</th>
                         <th>Campaign</th>
-                        <th>Calls Attempted</th>
+                        <th>Total</th>
+                        <th>Inbound</th>
+                        <th>Outbound</th>
                         <th>Connected</th>
-                        <th>Forms Submitted</th>
-                        <th>AHT</th>
-                        <th>Calls/Hour</th>
-                        <th>Login Time</th>
+                        <th>Forms</th>
+                        <th>Overall AHT</th>
+                        <th>In AHT</th>
+                        <th>Out AHT</th>
+                        <th>Calls/Hr</th>
+                        <th>Login</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -1052,9 +887,13 @@
                         <td><span class="badge badge-success"><span class="status-dot dot-green"></span>On Call</span></td>
                         <td>ST0012</td>
                         <td>48</td>
+                        <td><strong style="color: #2196f3;">12</strong></td>
+                        <td><strong style="color: #ff9800;">36</strong></td>
                         <td>42</td>
                         <td>40</td>
                         <td>4:58</td>
+                        <td style="color: #2196f3;">4:22</td>
+                        <td style="color: #ff9800;">5:15</td>
                         <td>9.2</td>
                         <td>09:00 AM</td>
                         <td><button class="view-detail-btn" onclick="viewAgentDetail('AG001')">View</button></td>
@@ -1065,9 +904,13 @@
                         <td><span class="badge badge-warning"><span class="status-dot dot-orange"></span>Idle</span></td>
                         <td>ST0013</td>
                         <td>52</td>
+                        <td><strong style="color: #2196f3;">15</strong></td>
+                        <td><strong style="color: #ff9800;">37</strong></td>
                         <td>47</td>
                         <td>45</td>
                         <td>5:12</td>
+                        <td style="color: #2196f3;">4:45</td>
+                        <td style="color: #ff9800;">5:28</td>
                         <td>8.8</td>
                         <td>09:00 AM</td>
                         <td><button class="view-detail-btn" onclick="viewAgentDetail('AG002')">View</button></td>
@@ -1078,9 +921,13 @@
                         <td><span class="badge badge-success"><span class="status-dot dot-green"></span>On Call</span></td>
                         <td>ST0012</td>
                         <td>45</td>
+                        <td><strong style="color: #2196f3;">10</strong></td>
+                        <td><strong style="color: #ff9800;">35</strong></td>
                         <td>38</td>
                         <td>36</td>
                         <td>5:30</td>
+                        <td style="color: #2196f3;">4:50</td>
+                        <td style="color: #ff9800;">5:45</td>
                         <td>8.5</td>
                         <td>09:15 AM</td>
                         <td><button class="view-detail-btn" onclick="viewAgentDetail('AG003')">View</button></td>
@@ -1091,71 +938,22 @@
                         <td><span class="badge badge-secondary"><span class="status-dot dot-grey"></span>On Break</span></td>
                         <td>ST0012</td>
                         <td>41</td>
+                        <td><strong style="color: #2196f3;">11</strong></td>
+                        <td><strong style="color: #ff9800;">30</strong></td>
                         <td>36</td>
                         <td>34</td>
                         <td>4:45</td>
+                        <td style="color: #2196f3;">4:18</td>
+                        <td style="color: #ff9800;">4:58</td>
                         <td>9.5</td>
                         <td>09:00 AM</td>
                         <td><button class="view-detail-btn" onclick="viewAgentDetail('AG004')">View</button></td>
-                    </tr>
-                    <tr>
-                        <td>AG005</td>
-                        <td>Ramesh Babu</td>
-                        <td><span class="badge badge-success"><span class="status-dot dot-green"></span>On Call</span></td>
-                        <td>ST0013</td>
-                        <td>50</td>
-                        <td>44</td>
-                        <td>42</td>
-                        <td>5:05</td>
-                        <td>9.0</td>
-                        <td>09:00 AM</td>
-                        <td><button class="view-detail-btn" onclick="viewAgentDetail('AG005')">View</button></td>
-                    </tr>
-                    <tr>
-                        <td>AG006</td>
-                        <td>Sunita Reddy</td>
-                        <td><span class="badge badge-info"><span class="status-dot dot-blue"></span>On Hold</span></td>
-                        <td>ST0015</td>
-                        <td>46</td>
-                        <td>41</td>
-                        <td>39</td>
-                        <td>4:52</td>
-                        <td>9.3</td>
-                        <td>09:00 AM</td>
-                        <td><button class="view-detail-btn" onclick="viewAgentDetail('AG006')">View</button></td>
-                    </tr>
-                    <tr>
-                        <td>AG007</td>
-                        <td>Arjun Singh</td>
-                        <td><span class="badge badge-warning"><span class="status-dot dot-orange"></span>Idle</span></td>
-                        <td>ST0012</td>
-                        <td>39</td>
-                        <td>34</td>
-                        <td>32</td>
-                        <td>5:20</td>
-                        <td>8.2</td>
-                        <td>09:30 AM</td>
-                        <td><button class="view-detail-btn" onclick="viewAgentDetail('AG007')">View</button></td>
-                    </tr>
-                    <tr>
-                        <td>AG008</td>
-                        <td>Meena Patel</td>
-                        <td><span class="badge badge-success"><span class="status-dot dot-green"></span>On Call</span></td>
-                        <td>ST0013</td>
-                        <td>55</td>
-                        <td>48</td>
-                        <td>46</td>
-                        <td>4:40</td>
-                        <td>9.8</td>
-                        <td>09:00 AM</td>
-                        <td><button class="view-detail-btn" onclick="viewAgentDetail('AG008')">View</button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Agent Detail Modal -->
     <div id="agentDetailModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1163,70 +961,76 @@
                 <button class="close-modal" onclick="closeModal()">&times;</button>
             </div>
 
-            <!-- Summary Cards -->
             <div class="detail-summary">
                 <div class="detail-card">
-                    <div class="detail-label">Today's Calls Attempted</div>
+                    <div class="detail-label">Total Calls (Today)</div>
                     <div class="detail-value">48</div>
                 </div>
                 <div class="detail-card">
                     <div class="detail-label">Connected Calls</div>
                     <div class="detail-value">42</div>
                 </div>
+                <div class="detail-card inbound">
+                    <div class="detail-label">Inbound Calls</div>
+                    <div class="detail-value">12</div>
+                </div>
+                <div class="detail-card outbound">
+                    <div class="detail-label">Outbound Calls</div>
+                    <div class="detail-value">36</div>
+                </div>
                 <div class="detail-card">
                     <div class="detail-label">Forms Submitted</div>
                     <div class="detail-value">40</div>
                 </div>
+                <div class="detail-card inbound">
+                    <div class="detail-label">Inbound Connected</div>
+                    <div class="detail-value">11 (92%)</div>
+                </div>
+                <div class="detail-card outbound">
+                    <div class="detail-label">Outbound Connected</div>
+                    <div class="detail-value">31 (86%)</div>
+                </div>
                 <div class="detail-card">
-                    <div class="detail-label">Average AHT</div>
+                    <div class="detail-label">Avg. AHT (Overall)</div>
                     <div class="detail-value">4:58</div>
                 </div>
-                <div class="detail-card">
-                    <div class="detail-label">Calls per Hour</div>
-                    <div class="detail-value">9.2</div>
+                <div class="detail-card inbound">
+                    <div class="detail-label">Inbound AHT</div>
+                    <div class="detail-value">4:22</div>
                 </div>
-                <div class="detail-card">
-                    <div class="detail-label">Form Submission Rate</div>
-                    <div class="detail-value">95%</div>
-                </div>
-                <div class="detail-card">
-                    <div class="detail-label">Total Break Time</div>
-                    <div class="detail-value">45 min</div>
-                </div>
-                <div class="detail-card">
-                    <div class="detail-label">Total Login Time</div>
-                    <div class="detail-value">5h 30m</div>
+                <div class="detail-card outbound">
+                    <div class="detail-label">Outbound AHT</div>
+                    <div class="detail-value">5:15</div>
                 </div>
             </div>
 
-            <!-- Charts -->
             <div class="charts-grid">
                 <div class="chart-container">
-                    <div class="chart-title">📊 Hourly Performance Trend (Today)</div>
-                    <canvas id="hourlyPerformanceChart"></canvas>
+                    <div class="chart-title">📊 Inbound vs Outbound Breakdown</div>
+                    <canvas id="inboundOutboundChart"></canvas>
                 </div>
                 <div class="chart-container">
-                    <div class="chart-title">📈 Call Status Distribution</div>
-                    <canvas id="agentCallStatusChart"></canvas>
+                    <div class="chart-title">📈 Hourly Performance Trend</div>
+                    <canvas id="hourlyPerformanceChart"></canvas>
                 </div>
             </div>
 
-            <!-- Day-wise Performance Table -->
             <div class="daywise-section">
-                <div class="section-title">📅 Day-wise Average Handling Time (AHT) - Last 7 Days</div>
+                <div class="section-title">📅 Day-wise Performance with Inbound/Outbound AHT - Last 7 Days</div>
                 <table class="data-table">
                     <thead>
                         <tr>
                             <th>Date</th>
                             <th>Campaign</th>
-                            <th>Login Time</th>
-                            <th>Logout Time</th>
-                            <th>Total Hours</th>
-                            <th>Calls Attempted</th>
+                            <th>Login</th>
+                            <th>Total</th>
+                            <th>Inbound</th>
+                            <th>Outbound</th>
                             <th>Connected</th>
-                            <th>Forms Submitted</th>
-                            <th>Avg. AHT</th>
-                            <th>Break Time</th>
+                            <th>Forms</th>
+                            <th>Overall AHT</th>
+                            <th>Inbound AHT</th>
+                            <th>Outbound AHT</th>
                             <th>Productivity</th>
                         </tr>
                     </thead>
@@ -1234,92 +1038,99 @@
                         <tr>
                             <td>22-01-2026</td>
                             <td>ST0012</td>
-                            <td>09:00 AM</td>
-                            <td>--</td>
-                            <td>5h 30m</td>
+                            <td>09:00</td>
                             <td>48</td>
+                            <td style="color: #2196f3; font-weight: 600;">12</td>
+                            <td style="color: #ff9800; font-weight: 600;">36</td>
                             <td>42</td>
                             <td>40</td>
                             <td><strong>4:58</strong></td>
-                            <td>45 min</td>
+                            <td><strong style="color: #2196f3;">4:22</strong></td>
+                            <td><strong style="color: #ff9800;">5:15</strong></td>
                             <td><span class="badge badge-success">95%</span></td>
                         </tr>
                         <tr>
                             <td>21-01-2026</td>
                             <td>ST0012</td>
-                            <td>09:00 AM</td>
-                            <td>06:00 PM</td>
-                            <td>9h 0m</td>
+                            <td>09:00</td>
                             <td>72</td>
+                            <td style="color: #2196f3; font-weight: 600;">18</td>
+                            <td style="color: #ff9800; font-weight: 600;">54</td>
                             <td>65</td>
                             <td>62</td>
                             <td><strong>5:05</strong></td>
-                            <td>1h 0m</td>
+                            <td><strong style="color: #2196f3;">4:30</strong></td>
+                            <td><strong style="color: #ff9800;">5:20</strong></td>
                             <td><span class="badge badge-success">93%</span></td>
                         </tr>
                         <tr>
                             <td>20-01-2026</td>
                             <td>ST0013</td>
-                            <td>09:00 AM</td>
-                            <td>06:00 PM</td>
-                            <td>9h 0m</td>
+                            <td>09:00</td>
                             <td>68</td>
+                            <td style="color: #2196f3; font-weight: 600;">17</td>
+                            <td style="color: #ff9800; font-weight: 600;">51</td>
                             <td>60</td>
                             <td>58</td>
                             <td><strong>5:12</strong></td>
-                            <td>1h 0m</td>
+                            <td><strong style="color: #2196f3;">4:45</strong></td>
+                            <td><strong style="color: #ff9800;">5:28</strong></td>
                             <td><span class="badge badge-success">92%</span></td>
                         </tr>
                         <tr>
                             <td>19-01-2026</td>
                             <td>ST0012</td>
-                            <td>09:00 AM</td>
-                            <td>06:00 PM</td>
-                            <td>9h 0m</td>
+                            <td>09:00</td>
                             <td>70</td>
+                            <td style="color: #2196f3; font-weight: 600;">21</td>
+                            <td style="color: #ff9800; font-weight: 600;">49</td>
                             <td>63</td>
                             <td>60</td>
                             <td><strong>4:55</strong></td>
-                            <td>1h 0m</td>
+                            <td><strong style="color: #2196f3;">4:18</strong></td>
+                            <td><strong style="color: #ff9800;">5:12</strong></td>
                             <td><span class="badge badge-success">94%</span></td>
                         </tr>
                         <tr>
                             <td>18-01-2026</td>
                             <td>ST0012</td>
-                            <td>09:00 AM</td>
-                            <td>06:00 PM</td>
-                            <td>9h 0m</td>
+                            <td>09:00</td>
                             <td>65</td>
+                            <td style="color: #2196f3; font-weight: 600;">16</td>
+                            <td style="color: #ff9800; font-weight: 600;">49</td>
                             <td>58</td>
                             <td>55</td>
                             <td><strong>5:20</strong></td>
-                            <td>1h 0m</td>
+                            <td><strong style="color: #2196f3;">4:55</strong></td>
+                            <td><strong style="color: #ff9800;">5:35</strong></td>
                             <td><span class="badge badge-warning">90%</span></td>
                         </tr>
                         <tr>
                             <td>17-01-2026</td>
                             <td>ST0013</td>
-                            <td>09:00 AM</td>
-                            <td>06:00 PM</td>
-                            <td>9h 0m</td>
+                            <td>09:00</td>
                             <td>75</td>
+                            <td style="color: #2196f3; font-weight: 600;">19</td>
+                            <td style="color: #ff9800; font-weight: 600;">56</td>
                             <td>68</td>
                             <td>65</td>
                             <td><strong>4:45</strong></td>
-                            <td>1h 0m</td>
+                            <td><strong style="color: #2196f3;">4:15</strong></td>
+                            <td><strong style="color: #ff9800;">5:00</strong></td>
                             <td><span class="badge badge-success">96%</span></td>
                         </tr>
                         <tr>
                             <td>16-01-2026</td>
                             <td>ST0012</td>
-                            <td>09:00 AM</td>
-                            <td>06:00 PM</td>
-                            <td>9h 0m</td>
+                            <td>09:00</td>
                             <td>71</td>
+                            <td style="color: #2196f3; font-weight: 600;">18</td>
+                            <td style="color: #ff9800; font-weight: 600;">53</td>
                             <td>64</td>
                             <td>61</td>
                             <td><strong>5:00</strong></td>
-                            <td>1h 0m</td>
+                            <td><strong style="color: #2196f3;">4:25</strong></td>
+                            <td><strong style="color: #ff9800;">5:18</strong></td>
                             <td><span class="badge badge-success">93%</span></td>
                         </tr>
                     </tbody>
@@ -1327,13 +1138,12 @@
             </div>
 
             <div style="margin-top: 30px; text-align: right;">
-                <button class="export-btn" onclick="exportAgentDetailReport()">📥 Export Agent Report (Excel)</button>
+                <button class="export-btn" onclick="exportAgentDetailReport()">📥 Export Agent Report with Inbound/Outbound (Excel)</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Set default dates
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date();
             const sevenDaysAgo = new Date(today);
@@ -1343,7 +1153,6 @@
             document.getElementById('toDate').valueAsDate = today;
         });
 
-        // Switch View
         function switchView(view) {
             const gridView = document.getElementById('agentsGrid');
             const tableView = document.getElementById('agentsTable');
@@ -1362,111 +1171,87 @@
             }
         }
 
-        // View Agent Detail
         function viewAgentDetail(agentId) {
             document.getElementById('agentDetailModal').classList.add('show');
-            
-            // Initialize charts after modal opens
-            setTimeout(() => {
-                initializeAgentCharts();
-            }, 100);
+            setTimeout(() => initializeAgentCharts(), 100);
         }
 
-        // Close Modal
         function closeModal() {
             document.getElementById('agentDetailModal').classList.remove('show');
         }
 
-        // Initialize Agent Charts
         function initializeAgentCharts() {
-            // Hourly Performance Chart
+            const inOutCtx = document.getElementById('inboundOutboundChart').getContext('2d');
+            new Chart(inOutCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Inbound', 'Outbound'],
+                    datasets: [{
+                        label: 'Total Calls',
+                        data: [12, 36],
+                        backgroundColor: ['#2196f3', '#ff9800']
+                    }, {
+                        label: 'Connected',
+                        data: [11, 31],
+                        backgroundColor: ['#1565c0', '#ef6c00']
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
             const hourlyCtx = document.getElementById('hourlyPerformanceChart').getContext('2d');
             new Chart(hourlyCtx, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: ['09-10', '10-11', '11-12', '12-13', '13-14', '14-15'],
                     datasets: [{
                         label: 'Calls Handled',
                         data: [8, 10, 9, 7, 8, 6],
-                        backgroundColor: 'rgba(44, 62, 144, 0.8)',
+                        borderColor: '#2c3e90',
+                        backgroundColor: 'rgba(44, 62, 144, 0.1)',
+                        tension: 0.4,
+                        fill: true
                     }]
                 },
                 options: {
                     responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-
-            // Call Status Chart
-            const statusCtx = document.getElementById('agentCallStatusChart').getContext('2d');
-            new Chart(statusCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Connected', 'Not Picked', 'Busy', 'Switched Off', 'Callback'],
-                    datasets: [{
-                        data: [42, 3, 2, 1, 0],
-                        backgroundColor: [
-                            '#4caf50',
-                            '#f44336',
-                            '#ff9800',
-                            '#9e9e9e',
-                            '#2196f3'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
                 }
             });
         }
 
-        // Refresh Data
         function refreshData() {
             console.log('Refreshing live data...');
             alert('🔄 Dashboard data refreshed successfully!');
-            // In real implementation, this would fetch latest data from API
         }
 
-        // Export Agent Data
         function exportAgentData() {
             const fromDate = document.getElementById('fromDate').value;
             const toDate = document.getElementById('toDate').value;
             const campaign = document.getElementById('campaignFilter').value;
+            const callType = document.getElementById('callTypeFilter').value;
             
-            alert(`📥 Exporting all agents data to Excel...\n\nDate Range: ${fromDate} to ${toDate}\nCampaign: ${campaign}\n\nFile: agents_performance_report.xlsx`);
+            alert(`📥 Exporting all agents with inbound/outbound data to Excel...\n\nDate Range: ${fromDate} to ${toDate}\nCampaign: ${campaign}\nCall Type: ${callType}\n\nFile: agents_performance_inout_report.xlsx`);
         }
 
-        // Export Agent Detail Report
         function exportAgentDetailReport() {
-            alert('📥 Exporting Rajesh Kumar (AG001) detailed report to Excel...\n\nIncluding day-wise AHT and all performance metrics.\n\nFile: agent_AG001_detailed_report.xlsx');
+            alert('📥 Exporting Rajesh Kumar (AG001) detailed report with day-wise inbound/outbound AHT to Excel...\n\nFile: agent_AG001_inout_detailed_report.xlsx');
         }
 
-        // Auto-refresh every 10 seconds for real-time updates
-        setInterval(() => {
-            console.log('Auto-refreshing live agent status...');
-            // Update agent statuses, call timers, metrics in real-time
-        }, 10000);
-
-        // Close modal on outside click
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
                 closeModal();
             }
         }
+
+        setInterval(() => {
+            console.log('Auto-refreshing live agent status...');
+        }, 10000);
     </script>
 </body>
 </html>
